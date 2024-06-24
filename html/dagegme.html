@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/dagegme.css">
+
+    <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js">
+    </script>
+        <script type="text/javascript">
+    (function(){
+        emailjs.init("qzzOh0sv2Xmq_p0T-");
+    })();
+    </script>
+
+</head>
+<body>
+    
+    <nav>
+        <ul class="nav-menu">
+            <li><a href="../index.html">Home</a></li>
+          
+            <li><a href="dagegme.html"> Plan a tour</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            
+        </ul>
+        <div> <a href="usser_pass.html" class="a">Admin pannel</a> </div> 
+    </nav>
+    
+
+    <div class="container">
+        <h2> შეიყვანე ტურის მონაცემები</h2>
+        <form id="inputForm">
+            <label for="data1">სად გინდა წასვლა:</label>
+            <input type="text" id="data1" name="data1" placeholder=" დაწერე : ქალაქი, ქვეყანა, მიმართლება" required><br><br>
+            
+            <label for="data2">რამდნე დღიანი ტური გინდა:</label>
+            <input type="text" id="data2" name="data2" placeholder=" დაწერე ტურის ხანგრძლიობა" required><br><br>
+            
+            <label for="data3">რამდენ ადამინია მსურველი:</label>
+            <input type="text" id="data3" name="data3" placeholder="შენ გარდა თუ ვინმეს უნდა მიუთითე რაოდენობა " ><br><br>
+            
+            <label for="data4">ტურის ბიუჯეტი:</label>
+            <input type="text" id="data4" name="data4" placeholder="დაწერე სასურველი ბიუჯეტი 1 პერსონაზე" required><br><br>
+            
+            <label for="data5">დამატებითი ინფორმცია:</label>
+            <input type="text" id="data5" name="data5" placeholder="თუ გსურთ მომაწოდე დამტეებითი ინფორმცია " ><br><br>
+            
+            <label for="data6">დამიტოვე მონაცმები შენ შესახებ:</label>
+            <input type="text" id="data6" name="data6" placeholder="დამიტოვე :  სახელი, გვარი, ტელეფონის ნომერი "  required><br><br>
+            
+            <button type="button" onclick="saveData()">Save Data</button>
+        </form>
+    </div>
+
+
+    <script src="../js/dagegme.js"></script>
+</body>
+</html>

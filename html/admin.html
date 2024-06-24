@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Page</title>
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+    <nav>
+        <ul class="nav-menu">
+            <li><a href="../index.html">Home</a></li>
+          
+            <li><a href="dagegme.html"> Plan a tour</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            
+        </ul>
+        <div> <a href="usser_pass.html" class="a">Admin pannel</a> </div> 
+    </nav>
+
+    <h1>Admin Page</h1>
+    <section class="section1">
+        
+        <form id="blogForm">
+            <input type="text" id="title" placeholder="Blog Title" required><br>
+            <!-- ბევრ contetებს ვქმნი ცალკე ხაზები რო დაიწეროს და ცალკე სურტები გავყოლო -->
+            <textarea id="content" placeholder="პერიოდი, როდიდან როდმდე სავალდებულო" required></textarea><br>
+            <textarea id="content1" placeholder="ღირებულებაში შედის ჩაწერე აქ ორ წერტილით :" ></textarea><br>
+            <textarea id="content2" placeholder=" შედის_1, სანახავი ადგილები " ></textarea><br>
+            <textarea id="content3" placeholder="შედის_1.2 , ტრანსპორ" ></textarea><br>
+            <textarea id="content4" placeholder="შედის_2 , კოტეჯი" ></textarea><br>
+            <textarea id="content5" placeholder="შედის_3 ,კვება" ></textarea><br>
+            <textarea id="content6" placeholder=" ohne img დამტებითი ინფო წასვლის და ჩამოსვლის დრო " ></textarea><br>
+            <textarea id="content7" placeholder=" ohne img დამტებითი ინფო (წამოიღეთ ..)" ></textarea><br>
+            <textarea id="content8" placeholder="ფასი" ></textarea><br>
+            <textarea id="content9" placeholder="ფასში არ შედის .." ></textarea><br>
+            
+            <input type="file" id="image" accept="image/*"><br>
+            <button type="submit" class="uploadbutton">Publish</button>
+        </form>
+    </section>
+    <div id="blogList"></div>
+
+    <script>
+        const form = document.getElementById('blogForm');
+        const blogList = document.getElementById('blogList');
+        let blogs = JSON.parse(localStorage.getItem('blogs')) || [];
+
+        const displayBlogs = () => {
+            blogList.innerHTML = '';
+            blogs.forEach((blog, index) => {
+                const blogItem = document.createElement('div');
+                blogItem.innerHTML = `
+                    <h2 >${blog.title}</h2>
+                    <p>${blog.content}</p>
+                    ${blog.content1 ? ` <p>${blog.content1}</p>` : ''} 
+                    ${blog.content2 ? ` <p>${blog.content2}</p>` : ''} 
+                    ${blog.content3 ? ` <p>${blog.content3}</p>` : ''} 
+                    ${blog.content4 ? ` <p>${blog.content4}</p>` : ''} 
+                    ${blog.content5 ? ` <p>${blog.content5}</p>` : ''} 
+                    ${blog.content6 ? ` <p>${blog.content6}</p>` : ''} 
+                    ${blog.content7 ? ` <p>${blog.content7}</p>` : ''} 
+                    ${blog.content8 ? ` <p>${blog.content8}</p>` : ''} 
+                    ${blog.content9 ? ` <p>${blog.content9}</p>` : ''} 
+                   
+                    ${blog.image ? `<img src="${blog.image}" alt="Blog Image" width="200">` : ''}
+                    <button onclick="editBlog(${index})" class='edit-delete_bt'>Edit</button>
+                    <button onclick="deleteBlog(${index})" class='edit-delete_bt'>Delete</button>
+                `;
+                blogList.appendChild(blogItem);
+                blogItem.classList.add('admin_blog_wrapper');
+            });
+            localStorage.setItem('blogs', JSON.stringify(blogs));
+        };
+
+        const editBlog = (index) => {
+            const blog = blogs[index];
+            document.getElementById('title').value = blog.title;
+            document.getElementById('content').value = blog.content;
+            document.getElementById('content1').value = blog.content1;
+            document.getElementById('content2').value = blog.content2;
+            document.getElementById('content3').value = blog.content3;
+            document.getElementById('content4').value = blog.content4;
+            document.getElementById('content5').value = blog.content5;
+            document.getElementById('content6').value = blog.content6;
+            document.getElementById('content7').value = blog.content7;
+            document.getElementById('content8').value = blog.content8;
+            document.getElementById('content9').value = blog.content9;
+            
+            // Handle image later if needed
+            blogs.splice(index, 1);
+        };
+
+        const deleteBlog = (index) => {
+            blogs.splice(index, 1);
+            displayBlogs();
+            updateDisplayPage();
+        };
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('content').value;
+            const content1 = document.getElementById('content1').value;
+            const content2 = document.getElementById('content2').value;
+            const content3 = document.getElementById('content3').value;
+            const content4 = document.getElementById('content4').value;
+            const content5 = document.getElementById('content5').value;
+            const content6 = document.getElementById('content6').value;
+            const content7 = document.getElementById('content7').value;
+            const content8 = document.getElementById('content8').value;
+            const content9 = document.getElementById('content9').value;
+            
+            const imageFile = document.getElementById('image').files[0];
+            let imageUrl = '';
+            if (imageFile) {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    imageUrl = reader.result;
+                    blogs.push({ title, content,  content1, content2,content3,content4,content5 ,content6,content7, content8,  content9,image: imageUrl });
+                    displayBlogs();
+                    updateDisplayPage();
+                    form.reset();
+                };
+                reader.readAsDataURL(imageFile);
+            } else {
+                blogs.push({ title, content, content1, content2, content3,content4,content5 ,content6,content7,content8,content9, image: '' });
+                displayBlogs();
+                updateDisplayPage();
+                form.reset();
+            }
+        });
+
+        const updateDisplayPage = () => {
+            
+            displayWindow.onload = () => {
+                displayWindow.postMessage({ blogs }, '*');
+            };
+        };
+
+        window.addEventListener('message', (event) => {
+            if (event.origin === window.location.origin) {
+                blogs = event.data.blogs;
+                displayBlogs();
+            }
+        });
+
+        displayBlogs();
+    </script>
+    <a href="../index.html">dis</a>
+</body>
+</html>
